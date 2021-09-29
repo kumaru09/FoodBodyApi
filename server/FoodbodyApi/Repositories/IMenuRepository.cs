@@ -6,9 +6,10 @@ namespace FoodbodyApi.Repositories
 {
     public interface IMenuRepository
     {
-        Task<Menu> GetMenuById(string id);
-        Task<List<Menu>> GetMenuList();
-        Task<List<Menu>> GetMenuListByName(string name);
+        Task<List<MenuDetail>> GetMenuList();
+        Task<List<MenuDetail>> GetMenuListByName(string name);
+        Task<MenuDetail> GetMenuDetailByName(string name);
+        Task CreateMenu(MenuDetail menu);
 
     }
 }

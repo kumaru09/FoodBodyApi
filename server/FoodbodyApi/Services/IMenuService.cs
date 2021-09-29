@@ -5,8 +5,9 @@ using FoodbodyApi.Models;
 namespace FoodbodyApi.Services {
     public interface IMenuService
     {
-        Task<Menu> GetMenuById(string id);
-        Task<List<Menu>> GetMenuList();
-        Task<List<Menu>> GetMenuListByName(string name);
+        Task<List<Menu>> GetMenuListAsync();
+        Task<List<Menu>> GetMenuListByNameAsync(string name);
+        Task<MenuDetail> GetMenuDetailByNameAsync(string name);
+        Task CreateMenuAsync(MenuDetail menu);
     }
 }

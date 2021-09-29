@@ -11,26 +11,44 @@ namespace FoodbodyApi.Models {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string Id { get; set; }
 
-        [Key]
         [Required]
-        public string menu_id { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public string name { get; set; }
+        public int Calories { get; set; }
+
+        public string ImageUrl { get; set; }
+    }
+
+    public class MenuDetail {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string Id { get; set; }
 
         [Required]
-        public int calories { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public double protein { get; set; }
+        public int Calories { get; set; }
 
         [Required]
-        public double carb { get; set; }
+        public double Protein { get; set; }
 
         [Required]
-        public double fat { get; set; }
+        public double Carb { get; set; }
 
         [Required]
-        public string imageUrl { get; set; }
+        public double Fat { get; set; }
+
+        [Required]
+        public int Serve { get; set; }
+
+        [Required]
+        public string Unit { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public string Barcode { get; set; }
     }
 }

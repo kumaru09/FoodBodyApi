@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using AutoMapper;
 using FoodbodyApi.Models;
 using FoodbodyApi.Repositories;
 using FoodbodyApi.Services;
@@ -29,15 +34,33 @@ namespace FoodbodyApi
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AllowNullCollections = true;
+                cfg.CreateMap<MenuDetail, Menu>();
+            });
+
+            var mapper = config.CreateMapper();
+
+            services.AddSingleton(mapper);
+
             services.AddSingleton<MongoService>();
 
             services.AddControllers();
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IBlobService, BlobService>();
+            services.AddScoped<IBlobRepository, BlobRepository>();
+
+
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FoodbodyApi", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -46,9 +69,9 @@ namespace FoodbodyApi
         {
             // if (env.IsDevelopment())
             // {
-                // app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FoodbodyApi v1"));
+            // app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "FoodbodyApi v1"); c.RoutePrefix = string.Empty; });
             // }
             // else
             // {

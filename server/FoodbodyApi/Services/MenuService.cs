@@ -1,6 +1,8 @@
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using FoodbodyApi.Models;
 using FoodbodyApi.Repositories;
 
@@ -8,24 +10,32 @@ namespace FoodbodyApi.Services {
     public class MenuService : IMenuService
     {
         private readonly IMenuRepository _menuRepository;
+        private readonly IMapper _mapper;
 
-        public MenuService(IMenuRepository menuRepository) {
+        public MenuService(IMenuRepository menuRepository, IMapper mapper) {
             _menuRepository = menuRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Menu> GetMenuById(string id)
+        public async Task CreateMenuAsync(MenuDetail menu)
         {
-            return await _menuRepository.GetMenuById(id);
+            await _menuRepository.CreateMenu(menu);
         }
 
-        public async Task<List<Menu>> GetMenuList()
+        public Task<MenuDetail> GetMenuDetailByNameAsync(string name)
         {
-            return await _menuRepository.GetMenuList();
+            return _menuRepository.GetMenuDetailByName(name);
         }
 
-        public async Task<List<Menu>> GetMenuListByName(string name)
+        public async Task<List<Menu>> GetMenuListAsync()
         {
-            return await _menuRepository.GetMenuListByName(name);
+            return _mapper.Map<List<MenuDetail>, List<Menu>>(await _menuRepository.GetMenuList());
+        }
+
+        public async Task<List<Menu>> GetMenuListByNameAsync(string name)
+        {
+            var menuList = await _menuRepository.GetMenuListByName(name);
+            return _mapper.Map<List<MenuDetail>, List<Menu>>(menuList);
         }
     }
 }
