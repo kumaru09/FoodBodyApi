@@ -29,10 +29,10 @@ namespace FoodbodyApi.Repositories {
             return await _menu.Find(menu => true).ToListAsync();
         }
 
-        public async Task<List<MenuDetail>> GetMenuListByName(string name)
+        public async Task<List<MenuDetail>> GetMenuListByName(string name, int? queryPage)
         {
-            return await _menu.FindAsync(m => m.Name.Contains(name)).Result.ToListAsync();
+            int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
+            return await _menu.Find(menu =>  menu.Name.Contains(name)).Skip((page - 1) * 5).Limit(5).ToListAsync();
         }
-
     }
 }

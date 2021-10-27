@@ -52,9 +52,9 @@ namespace FoodbodyApi
         /// เรียก menuList ที่มีชื่อตรงกับที่ใส่
         /// </summary>
         [HttpGet("name/{name}")]
-        public ActionResult<List<Menu>> GetMenuListByName(string name)
+        public ActionResult<List<Menu>> GetMenuListByName(string name, int? queryPage)
         {
-            var menuList = _menuService.GetMenuListByNameAsync(name).Result;
+            var menuList = _menuService.GetMenuListByNameAsync(name, queryPage).Result;
 
             return Ok(menuList);
         }
