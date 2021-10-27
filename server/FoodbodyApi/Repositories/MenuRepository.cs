@@ -24,15 +24,16 @@ namespace FoodbodyApi.Repositories {
             return await _menu.FindAsync(menu => menu.Name == name).Result.FirstOrDefaultAsync();
         }
 
-        public async Task<List<MenuDetail>> GetMenuList()
+        public async Task<List<MenuDetail>> GetMenuList(int? queryPage)
         {
-            return await _menu.Find(menu => true).ToListAsync();
+            int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
+            return await _menu.Find(menu => true).Skip((page - 1) * 10).Limit(10).ToListAsync();
         }
 
         public async Task<List<MenuDetail>> GetMenuListByName(string name, int? queryPage)
         {
             int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
-            return await _menu.Find(menu =>  menu.Name.Contains(name)).Skip((page - 1) * 5).Limit(5).ToListAsync();
+            return await _menu.Find(menu =>  menu.Name.Contains(name)).Skip((page - 1) * 10).Limit(10).ToListAsync();
         }
     }
 }

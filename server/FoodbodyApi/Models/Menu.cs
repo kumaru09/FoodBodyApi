@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
@@ -16,6 +17,9 @@ namespace FoodbodyApi.Models {
 
         [Required]
         public int Calories { get; set; }
+
+        [Required]
+        public List<string> Category { get; set; }
 
         public string ImageUrl { get; set; }
     }
@@ -46,6 +50,9 @@ namespace FoodbodyApi.Models {
 
         [Required]
         public string Unit { get; set; }
+
+        [Required]
+        public List<string> Category { get; set; }
 
         public string ImageUrl { get; set; }
 

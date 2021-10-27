@@ -25,9 +25,9 @@ namespace FoodbodyApi
         /// เรียก menuList
         /// </summary> 
         [HttpGet]
-        public ActionResult<List<Menu>> GetMenuList()
+        public ActionResult<List<Menu>> GetMenuList(int? queryPage)
         {
-            var menuList = _menuService.GetMenuListAsync().Result;
+            var menuList = _menuService.GetMenuListAsync(queryPage).Result;
 
             return Ok(menuList);
         }
