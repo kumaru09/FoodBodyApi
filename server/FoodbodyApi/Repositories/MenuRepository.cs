@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FoodbodyApi.Models;
 using FoodbodyApi.Services;
@@ -28,6 +30,12 @@ namespace FoodbodyApi.Repositories {
         {
             int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
             return await _menu.Find(menu => true).Skip((page - 1) * 10).Limit(10).ToListAsync();
+        }
+
+        public List<MenuDetail> GetMenuListByCategory(List<string> name, int? queryPage)
+        {
+            int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
+            return _menu.AsQueryable<MenuDetail>().Where(menu => menu.Category != null).ToList().Where(menu => !name.Except(menu.Category).Any()).Skip((page - 1) * 10).Take(10).ToList();
         }
 
         public async Task<List<MenuDetail>> GetMenuListByName(string name, int? queryPage)

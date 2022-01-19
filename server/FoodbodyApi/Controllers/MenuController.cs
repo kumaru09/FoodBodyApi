@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FoodbodyApi.Models;
 using FoodbodyApi.Services;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,17 @@ namespace FoodbodyApi
         public ActionResult<List<Menu>> GetMenuListByName(string name, int? queryPage)
         {
             var menuList = _menuService.GetMenuListByNameAsync(name, queryPage).Result;
+
+            return Ok(menuList);
+        }
+
+        /// <summary>
+        /// เรียก menuList จาก Category
+        /// </summary>
+        [HttpGet("name/category/")]
+        public ActionResult<List<Menu>> GetMenuListByName([FromQuery] List<string> c, int? queryPage)
+        {
+            var menuList = _menuService.GetMenuListByCategory(c, queryPage);
 
             return Ok(menuList);
         }

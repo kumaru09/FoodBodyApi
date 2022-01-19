@@ -8,6 +8,7 @@ namespace FoodbodyApi.Services {
         Task<List<Menu>> GetMenuListAsync(int? queryPage);
         Task<List<Menu>> GetMenuListByNameAsync(string name, int? queryPage);
         Task<MenuDetail> GetMenuDetailByNameAsync(string name);
+        List<Menu> GetMenuListByCategory(List<string> name, int? queryPage);
         Task CreateMenuAsync(MenuDetail menu);
     }
 }
