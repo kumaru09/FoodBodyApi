@@ -50,12 +50,25 @@ namespace FoodbodyApi
         }
 
         /// <summary>
-        /// เรียก menuList ที่มีชื่อตรงกับที่ใส่
+        /// เรียก menuList โดยชื่อ, Category, หรือทั้งสอง
         /// </summary>
-        [HttpGet("name/{name}")]
-        public ActionResult<List<Menu>> GetMenuListByName(string name, int? queryPage)
-        {
-            var menuList = _menuService.GetMenuListByNameAsync(name, queryPage).Result;
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///    ค้นหาโดยชื่อ : api/Menu/name?name={..}
+        ///
+        ///    ค้นหาโดยcategory : api/Menu/name?c={..}
+        ///
+        ///    ค้นหาโดยชื่อและcategory : api/Menu/name?c={..}&amp;name={..}&amp;...
+        /// </remarks>
+        [HttpGet("name")]
+        public ActionResult<List<Menu>> GetMenuListByName([FromQuery] List<string> c, string name, int? queryPage)
+        {   
+            if (name == null && !c.Any()) {
+                var menu = new List<MenuDetail>();
+                return Ok(menu);
+            }
+            var menuList = _menuService.GetMenuListByNameAsync(c, name, queryPage).Result;
 
             return Ok(menuList);
         }

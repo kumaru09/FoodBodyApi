@@ -38,9 +38,9 @@ namespace FoodbodyApi.Services {
             return _mapper.Map<List<MenuDetail>, List<Menu>>(menuList);
         }
 
-        public async Task<List<Menu>> GetMenuListByNameAsync(string name, int? queryPage)
+        public async Task<List<Menu>> GetMenuListByNameAsync(List<string> c, string name, int? queryPage)
         {
-            var menuList = await _menuRepository.GetMenuListByName(name, queryPage);
+            var menuList = await _menuRepository.GetMenuListByName(c, name, queryPage);
             return _mapper.Map<List<MenuDetail>, List<Menu>>(menuList);
         }
     }

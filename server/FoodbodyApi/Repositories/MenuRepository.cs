@@ -38,10 +38,14 @@ namespace FoodbodyApi.Repositories {
             return _menu.AsQueryable<MenuDetail>().Where(menu => menu.Category != null).ToList().Where(menu => !name.Except(menu.Category).Any()).Skip((page - 1) * 10).Take(10).ToList();
         }
 
-        public async Task<List<MenuDetail>> GetMenuListByName(string name, int? queryPage)
+        public async Task<List<MenuDetail>> GetMenuListByName(List<string> c, string name, int? queryPage)
         {
             int page = queryPage.GetValueOrDefault(1) == 0 ? 1 : queryPage.GetValueOrDefault(1);
-            return await _menu.Find(menu =>  menu.Name.Contains(name)).Skip((page - 1) * 10).Limit(10).ToListAsync();
+            if (!c.Any()) return await _menu.Find(menu =>  menu.Name.Contains(name)).Skip((page - 1) * 10).Limit(10).ToListAsync();
+            else if (c.Any() && name == null) {
+                return _menu.AsQueryable<MenuDetail>().Where(menu => menu.Category != null).ToList().Where(menu => !c.Except(menu.Category).Any()).Skip((page - 1) * 10).Take(10).ToList();
+            }
+            return _menu.AsQueryable<MenuDetail>().Where(menu => menu.Category != null).ToList().Where(menu => !c.Except(menu.Category).Any()).Where((menu =>  menu.Name.Contains(name))).Skip((page - 1) * 10).Take(10).ToList();
         }
     }
 }
